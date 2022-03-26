@@ -1,6 +1,7 @@
 package nio;
 
 import nio.*;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,19 +38,27 @@ public class ServerTest {
         return server;
     }
 
+    @After
+    public void closeAll() {
+        if (client!=null ) {
+            client.close();
+        }
+    }
+
     @Test
     public void startSingleServer() {
         try {
             runServer(1);
         }catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
     @Test
     public void startMultiServer() {
         try {
-            runServer(10);
+            Server server = runServer(10);
+            server.close();
         } catch (Exception throwable) {
             Assert.assertNull(throwable);
         }
@@ -58,6 +67,7 @@ public class ServerTest {
     @Test
     public void getClientsEmpty() {
         Server server = runServer(1);
+        server.close();
         assertFalse(server.getClients().iterator().hasNext());
     }
 
@@ -70,8 +80,10 @@ public class ServerTest {
             client = new Client(ports, ++serverPort, 4);
             client.calculate(operands).get();
             assertEquals(1, server.getClients().size());
+            client.close();
+            server.close();
         }catch (InterruptedException e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -88,8 +100,10 @@ public class ServerTest {
             client = new Client(new int[]{ports[2]}, ++serverPort, 4);
             client.calculate(operands).get();
             assertEquals(3, server.getClients().size());
+            client.close();
+            server.close();
         } catch (InterruptedException e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -100,8 +114,10 @@ public class ServerTest {
             Client client = new Client(ports, ++serverPort, 1);
             client.calculate(operands).get();
             assertEquals(1, server.getOperationsForClient(client.getClientId()).size());
+            client.close();
+            server.close();
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -114,8 +130,10 @@ public class ServerTest {
             client.calculate(operands).get();
             client.calculate(operands).get();
             assertEquals(1, server.getOperationsForClient(client.getClientId()).size());
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -126,8 +144,11 @@ public class ServerTest {
             client = new Client(ports, ++serverPort, 4);
             client.calculate(operands).get();
             assertNull(server.getOperationsForClient(client.getClientId() + 100));
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -141,8 +162,10 @@ public class ServerTest {
             Thread.sleep(1500);
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getOperationOrderResults().size(), Math.min(operands.size(), currThreadsCountForSend));
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -155,8 +178,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getReceivingCalculationLocks().size(), Math.min(operands.size(), currThreadsCountForSend));
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -168,8 +194,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getReceivedOperands(), serverOperation.getTotalOperands());
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -181,8 +210,11 @@ public class ServerTest {
             client.calculate(operands).get();
             //ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverPort, serverPort);
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -194,8 +226,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getReceivedOperands(), operands.size());
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -207,8 +242,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getTotalOperands(), operands.size());
+            client.close();
+            server.close();
         }catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -220,8 +258,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertNotEquals(serverOperation.getServerState(), ServerState.LOADING);
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -233,8 +274,11 @@ public class ServerTest {
             client.calculate(operands).get();
             ServerOperation serverOperation = server.getOperationsForClient(client.getClientId()).values().iterator().next();
             assertEquals(serverOperation.getServerState(), ServerState.DONE);
+            client.close();
+            server.close();
         } catch (Exception e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 

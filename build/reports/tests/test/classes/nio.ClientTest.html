@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">1</div>
+<div class="counter">23</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.016s</div>
+<div class="counter">1m35.56s</div>
 <p>duration</p>
 </div>
 </td>
@@ -63,6 +63,9 @@
 <li>
 <a href="#tab0">Tests</a>
 </li>
+<li>
+<a href="#tab1">Standard error</a>
+</li>
 </ul>
 <div id="tab0" class="tab">
 <h2>Tests</h2>
@@ -75,11 +78,279 @@
 </tr>
 </thead>
 <tr>
+<td class="success">cancelDoneResult</td>
+<td class="success">2.935s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">cancelResult</td>
+<td class="success">3.048s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">cancelResultDontExist</td>
+<td class="success">2.256s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">closeReopenTest</td>
+<td class="success">3.686s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">closeTest</td>
+<td class="success">2.785s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getResult</td>
+<td class="success">2.818s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getResultDontExist</td>
+<td class="success">2.594s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getResultMultithreading</td>
+<td class="success">4.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">invalidOperandCalculate</td>
+<td class="success">2.608s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">multiClientCalculate</td>
+<td class="success">3.490s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">multiClientCalculateHugeOperands</td>
+<td class="success">6.665s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">multiThreadingClientCalculate</td>
+<td class="success">22.421s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nEqualsOperands</td>
+<td class="success">2.843s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">negPorts</td>
+<td class="success">2.604s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">negServerPort</td>
+<td class="success">2.546s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">negThreadsCount</td>
+<td class="success">2.601s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nonNullCalculate</td>
+<td class="success">3.794s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nullOperands</td>
+<td class="success">2.617s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">nullPorts</td>
-<td class="success">1.016s</td>
+<td class="success">2.604s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">resultMapCheck</td>
+<td class="success">3.171s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">singleClientCalculate</td>
+<td class="success">4.255s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">singleOperandCalculate</td>
+<td class="success">3.062s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">twoClientCalculate</td>
+<td class="success">6.147s</td>
 <td class="success">passed</td>
 </tr>
 </table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.nio.channels.ClosedByInterruptException
+	at java.base/java.nio.channels.spi.AbstractInterruptibleChannel.end(AbstractInterruptibleChannel.java:199)
+	at java.base/sun.nio.ch.SocketChannelImpl.endWrite(SocketChannelImpl.java:443)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:465)
+	at nio.Server.processCloseRequest(Server.java:279)
+	at nio.Server.answer(Server.java:144)
+	at nio.Server.lambda$createListeningClientsThread$1(Server.java:89)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.nio.channels.ClosedByInterruptException
+	at java.base/java.nio.channels.spi.AbstractInterruptibleChannel.end(AbstractInterruptibleChannel.java:199)
+	at java.base/sun.nio.ch.SocketChannelImpl.endWrite(SocketChannelImpl.java:443)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:465)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:117)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2056)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2090)
+	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+	at nio.Server.lambda$createAnswerThread$2(Server.java:104)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</pre>
+</span>
 </div>
 </div>
 <div id="footer">
@@ -89,7 +360,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 6.0</a> at 26 мар. 2022 г., 14:01:03</p>
+<a href="http://www.gradle.org">Gradle 6.0</a> at 26 мар. 2022 г., 16:52:10</p>
 </div>
 </div>
 </body>

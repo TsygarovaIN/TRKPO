@@ -1,6 +1,7 @@
 package nio;
 
 import nio.*;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ public class ClientTest {
     static int serverPort = 7070;
     static int serverThreads = 5;
     static Client client;
+    static Server server;
 
     static Operand op1 = new Operand(OperandType.COS, 10, OperandType.PLUS);
     static Operand op2 = new Operand(OperandType.EMPTY, 5, OperandType.MINUS);
@@ -37,16 +39,28 @@ public class ClientTest {
     @Before
     public void init() {
         ports = new int[]{++portsCounter, ++portsCounter, ++portsCounter};
-        Server server = new Server(ports, serverThreads);
+        server = new Server(ports, serverThreads);
         Runnable serverRunnable = server::start;
         serverRunnable.run();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
         client = new Client(ports, ++serverPort, 4);
+    }
+
+    @After
+    public void closeAll() {
+        client.close();
+        server.close();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -57,7 +71,7 @@ public class ClientTest {
         try {
             Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -66,7 +80,7 @@ public class ClientTest {
         try {
             Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -75,7 +89,7 @@ public class ClientTest {
         try {
             Assert.assertEquals(3, client.calculate(List.of(op5)).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -85,7 +99,7 @@ public class ClientTest {
         try {
             Assert.assertEquals(Double.NaN, client.calculate(List.of(op1, op2, op3)).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -94,7 +108,7 @@ public class ClientTest {
         try {
             Assert.assertEquals(3.26251584, client.calculate(operands2).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -106,7 +120,7 @@ public class ClientTest {
                     Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
                     Assert.assertEquals(3.26251584, client.calculate(operands2).get(), 0.001);
                 } catch (InterruptedException e) {
-                    Assert.assertNull(e);
+                    e.printStackTrace();
                 }
             };
             runnable.run();
@@ -125,7 +139,7 @@ public class ClientTest {
             Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
             Assert.assertEquals(3.26251584, client2.calculate(operands2).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -139,7 +153,7 @@ public class ClientTest {
             client.cancelResult(result.getId());
             Assert.assertEquals(ClientState.CANCEL, result.getState());
         } catch (IOException e){
-            Assert.assertNull(e);
+            e.printStackTrace();
         }
     }
 
@@ -152,7 +166,8 @@ public class ClientTest {
             client.cancelResult(result.getId());
             Assert.assertEquals(ClientState.DONE, result.getState());
         } catch (IOException | InterruptedException e){
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -219,7 +234,8 @@ public class ClientTest {
             client = new Client(ports, serverPort, 4);
             Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
         } catch (InterruptedException e) {
-            Assert.assertNull(e);
+            e.printStackTrace();
+
         }
     }
 
@@ -253,7 +269,7 @@ public class ClientTest {
         Client client = new Client(new int[]{1000}, 1000, -4);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void resultMapCheck() {
         Result result = client.calculate(operands);
         Assert.assertTrue(client.getResultMap().containsKey(result.getId()));

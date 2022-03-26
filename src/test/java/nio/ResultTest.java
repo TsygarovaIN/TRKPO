@@ -35,6 +35,7 @@ public class ResultTest {
             Client client = new Client(new int[]{6000}, 6100, 1);
             Result result = client.calculate(operands);
             assertNotEquals(Double.NaN, result.get());
+            client.close();
         } catch (InterruptedException e) {
             assertNull(e);
         }
@@ -56,6 +57,7 @@ public class ResultTest {
             Result result = client.calculate(operands);
             result.get();
             assertEquals(ClientState.DONE, result.getState());
+            client.close();
         } catch (InterruptedException e) {
             assertNull(e);
         }
@@ -89,6 +91,7 @@ public class ResultTest {
             client.close();
             Thread.sleep(1000);
             assertEquals(ClientState.CLOSE, result.getState());
+            client.close();
         } catch (InterruptedException e) {
             assertNull(e);
         }

@@ -30,6 +30,8 @@ public class Server {
     private final ExecutorService preparingForCalculatingExecutor;
     private final BlockingQueue<ServerAnswer> readyForSendingResultsQueue = new LinkedBlockingQueue<>();
     private SocketChannel answerChannel;
+    private final Thread listeningClientsThread;
+    private final Thread createAnswerThread;
 
     public Server(int[] serverPorts, int calculateThreadsCount) {
         if (serverPorts == null) {
@@ -48,11 +50,18 @@ public class Server {
         } else {
             calculatingExecutor = Executors.newFixedThreadPool(calculateThreadsCount - 1);
         }
+        listeningClientsThread = createListeningClientsThread();
+        createAnswerThread = createAnswerThread();
     }
 
     public void start() {
-        createListeningClientsThread().start();
-        createAnswerThread().start();
+        listeningClientsThread.start();
+        createAnswerThread.start();
+    }
+
+    public void close() {
+        listeningClientsThread.interrupt();
+        createAnswerThread.interrupt();
     }
 
     private Thread createListeningClientsThread() {
