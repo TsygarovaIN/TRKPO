@@ -157,7 +157,6 @@ public class ClientTest {
         }
     }
 
-
     @Test
     public void cancelDoneResult(){
         try {
@@ -222,12 +221,6 @@ public class ClientTest {
     }
 
     @Test
-    public void closeTest() {
-        client.close();
-        Assert.assertTrue(client.isClosed());
-    }
-
-    @Test
     public void closeReopenTest() {
         try {
             client.close();
@@ -235,8 +228,13 @@ public class ClientTest {
             Assert.assertEquals(3.48278, client.calculate(operands).get(), 0.001);
         } catch (InterruptedException e) {
             e.printStackTrace();
-
         }
+    }
+
+    @Test
+    public void closeTest() {
+        client.close();
+        Assert.assertTrue(client.isClosed());
     }
 
     @Test(expected = NullPointerException.class)

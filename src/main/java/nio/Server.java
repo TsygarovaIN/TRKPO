@@ -314,6 +314,14 @@ public class Server {
         }
     }
 
+    public Map<Integer, ServerOperation> getResultsMap() {
+        return resultsMap;
+    }
+
+    public ClientInfo getClientInfo(int clientId) {
+        return clientsResultsMap.get(clientId);
+    }
+
     private static class ServerAnswer {
         private final int id;
         private final double result;
@@ -324,9 +332,13 @@ public class Server {
         }
     }
 
-    private static class ClientInfo {
+    public static class ClientInfo {
         private final Set<Integer> resultIds = new HashSet<>();
         private boolean closed = false;
+
+        public Set<Integer> getResultIds() {
+            return resultIds;
+        }
 
         public void addResultId(int id) {
             resultIds.add(id);
