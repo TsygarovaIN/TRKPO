@@ -123,7 +123,7 @@ public class Server {
                     answerBuffer.clear();
                 }
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+
             }
         });
     }

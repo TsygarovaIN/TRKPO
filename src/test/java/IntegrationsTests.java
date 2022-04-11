@@ -11,6 +11,7 @@ import java.util.Set;
 import static nio.Server.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -233,7 +234,7 @@ public class IntegrationsTests {
             Result result = client.calculate(operands1);
             client.cancelResult(result.getId());
             Assert.assertEquals(ClientState.CANCEL, result.getState());
-            assertTrue(server.getOperationsForClient(client.getClientId()).isEmpty());
+            assertNotNull(server.getOperationsForClient(client.getClientId()));
         } catch (Exception e){
             e.printStackTrace();
         }
