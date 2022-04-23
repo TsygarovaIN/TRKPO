@@ -1,17 +1,26 @@
-import nio.*;
-import org.junit.Assert;
+import nio.Client;
+import nio.ClientState;
+import nio.Operand;
+import nio.OperandType;
+import nio.Result;
+import nio.Server;
+import nio.ServerOperation;
+import nio.ServerState;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static nio.Server.*;
+import static nio.Server.ClientInfo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,10 +41,10 @@ public class IntegrationsTests {
     static Operand op8 = new Operand(OperandType.EMPTY, 50, OperandType.MINUS);
     static Operand op9 = new Operand(OperandType.LN, Math.E, OperandType.EQUALS);
 
-    static List<Operand> partOfOperands = List.of(op1, op2, op4, op5);
-    static List<Operand> operands1 = List.of(op4, op5, op6);
+    static List<Operand> partOfOperands = listOf(op1, op2, op4, op5);
+    static List<Operand> operands1 = listOf(op4, op5, op6);
     static List<Operand> operands2 = new ArrayList<>();
-    static List<Operand> operands3 = List.of(op7, op8, op9);
+    static List<Operand> operands3 = listOf(op7, op8, op9);
 
     static {
         for (int i = 0; i < 1000; i++) {
@@ -44,6 +53,12 @@ public class IntegrationsTests {
         operands2.add(op6);
     }
 
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(20);
 
     @Test
     public void simpleTest() {
@@ -60,7 +75,7 @@ public class IntegrationsTests {
     }
 
     @Test
-    public void threeClientsTest() {
+    public void multiClientsTest() {
         try {
             int[] ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
             Server server = new Server(ports, 4);
@@ -78,7 +93,7 @@ public class IntegrationsTests {
         }
     }
 
-     @Test
+    @Test
     public void threeClientsTestMultiThreading() {
         try {
             Server server = new Server(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++}, 4);
@@ -120,14 +135,13 @@ public class IntegrationsTests {
             r1.run();
             r2.run();
             r3.run();
-            Set<Integer> clientIds = Set.of(
-                    client1.getClientId(),
-                    client2.getClientId(),
-                    client3.getClientId()
-            );
+            Set<Integer> clientIds = new HashSet<>();
+            clientIds.add(client1.getClientId());
+            clientIds.add(client2.getClientId());
+            clientIds.add(client3.getClientId());
             assertEquals(clientIds, server.getClients());
         } catch (Exception e) {
-            Assert.assertNull(e);
+            assertNull(e);
         }
     }
 
@@ -144,14 +158,13 @@ public class IntegrationsTests {
             Result result2 = client.calculate(operands2);
             Result result3 = client.calculate(operands3);
             assertEquals(51, result1.get(), 0.000000001);
-            assertEquals(3.2625158429879466,result2.get(), 0.000000001);
+            assertEquals(3.2625158429879466, result2.get(), 0.000000001);
             assertEquals(149, result3.get(), 0.000000001);
             ClientInfo clientInfo = server.getClientInfo(client.getClientId());
-            Set<Integer> resultIds = Set.of(
-                    result1.getId(),
-                    result2.getId(),
-                    result3.getId()
-            );
+            Set<Integer> resultIds = new HashSet<>();
+            resultIds.add(result1.getId());
+            resultIds.add(result2.getId());
+            resultIds.add(result3.getId());
             assertEquals(resultIds.size(), clientInfo.getResultIds().size());
             assertEquals(resultIds, clientInfo.getResultIds());
         } catch (Exception e) {
@@ -181,7 +194,7 @@ public class IntegrationsTests {
             client2.close();
             result31.get();
             assertEquals(51, result1.get(), 0.000000001);
-            assertEquals(3.2625158429879466,result2.get(), 0.000000001);
+            assertEquals(3.2625158429879466, result2.get(), 0.000000001);
             assertEquals(149, result3.get(), 0.000000001);
             assertEquals(6, server.getResultsMap().size());
             assertEquals(operands1.size(), server.getResultsMap().get(result1.getId()).getTotalOperands());
@@ -189,11 +202,10 @@ public class IntegrationsTests {
             assertEquals(operands1.size(), server.getResultsMap().get(result21.getId()).getTotalOperands());
             assertEquals(operands1.size(), server.getResultsMap().get(result21.getId()).getReceivedOperands());
             ClientInfo clientInfo = server.getClientInfo(client1.getClientId());
-            Set<Integer> resultIds = Set.of(
-                    result1.getId(),
-                    result2.getId(),
-                    result3.getId()
-            );
+            Set<Integer> resultIds = new HashSet<>();
+            resultIds.add(result1.getId());
+            resultIds.add(result2.getId());
+            resultIds.add(result3.getId());
             assertEquals(resultIds.size(), clientInfo.getResultIds().size());
             assertEquals(resultIds, clientInfo.getResultIds());
             ClientInfo clientInfo2 = server.getClientInfo(client2.getClientId());
@@ -233,15 +245,15 @@ public class IntegrationsTests {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             Result result = client.calculate(operands1);
             client.cancelResult(result.getId());
-            Assert.assertEquals(ClientState.CANCEL, result.getState());
-            assertNotNull(server.getOperationsForClient(client.getClientId()));
-        } catch (Exception e){
+            assertEquals(ClientState.CANCEL, result.getState());
+            assertTrue(server.getOperationsForClient(client.getClientId()).isEmpty());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void cancelDoneResult(){
+    public void cancelDoneResult() {
         try {
             int[] ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
             Server server = new Server(ports, 4);
@@ -258,10 +270,10 @@ public class IntegrationsTests {
             client.cancelResult(result1.getId());
             client.cancelResult(result2.getId());
             client.cancelResult(result3.getId());
-            Assert.assertEquals(ClientState.DONE, result1.getState());
-            Assert.assertEquals(ClientState.DONE, result2.getState());
-            Assert.assertEquals(ClientState.DONE, result3.getState());
-        } catch (IOException | InterruptedException e){
+            assertEquals(ClientState.DONE, result1.getState());
+            assertEquals(ClientState.DONE, result2.getState());
+            assertEquals(ClientState.DONE, result3.getState());
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -281,19 +293,18 @@ public class IntegrationsTests {
             Result result4 = client.calculate(operands1);
             Result result5 = client.calculate(operands2);
             Result result6 = client.calculate(operands3);
-            List<Result> results = List.of(
-                    result1,
-                    result2,
-                    result3,
-                    result4,
-                    result5,
-                    result6
-            );
+            List<Result> results = new ArrayList<>();
+            results.add(result1);
+            results.add(result2);
+            results.add(result3);
+            results.add(result4);
+            results.add(result5);
+            results.add(result6);
             Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
             for (Result result : results) {
                 result.get();
                 ServerState serverState = serverOperationMap.get(result.getId()).getServerState();
-                assertTrue( serverState == ServerState.WAITING_TO_SEND || serverState == ServerState.DONE);
+                assertTrue(serverState == ServerState.WAITING_TO_SEND || serverState == ServerState.DONE);
                 assertFalse(result.isWaiting());
             }
             assertEquals(serverPortsCounter - 1, serverOperationMap.get(result1.getId()).getAnswerPort());
@@ -308,5 +319,20 @@ public class IntegrationsTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullPorts() {
+        new Client(null, 1000, 4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void negServerPort() {
+        new Client(new int[]{1000}, -1000, 4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void negThreadsCount() {
+        new Client(new int[]{1000}, 1000, -4);
     }
 }

@@ -4,9 +4,13 @@ import nio.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -23,7 +27,14 @@ public class ServerTest {
     static Operand op4 = new Operand(OperandType.EMPTY, 7, OperandType.MULT);
     static Operand op5 = new Operand(OperandType.ABS, -3, OperandType.EQUALS);
 
-    static List<Operand> operands = List.of(op1, op2, op3, op4, op5);
+    static List<Operand> operands = listOf(op1, op2, op3, op4, op5);
+
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(20);
 
     @Before
     public void init() {
@@ -103,36 +114,6 @@ public class ServerTest {
             client.close();
             server.close();
         } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void getOperationsForClientSimple() {
-        try {
-            Server server = runServer(1);
-            Client client = new Client(ports, ++serverPort, 1);
-            client.calculate(operands).get();
-            assertEquals(1, server.getOperationsForClient(client.getClientId()).size());
-            client.close();
-            server.close();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void getOperationsForClientThree() {
-        try {
-            Server server = runServer(1);
-            Client client = new Client(ports, ++serverPort, 1);
-            client.calculate(operands).get();
-            client.calculate(operands).get();
-            client.calculate(operands).get();
-            assertEquals(1, server.getOperationsForClient(client.getClientId()).size());
-            client.close();
-            server.close();
-        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -228,9 +209,7 @@ public class ServerTest {
             assertEquals(serverOperation.getReceivedOperands(), operands.size());
             client.close();
             server.close();
-        } catch (Exception e){
-            e.printStackTrace();
-
+        } catch (Exception ignored){
         }
     }
 
@@ -244,9 +223,7 @@ public class ServerTest {
             assertEquals(serverOperation.getTotalOperands(), operands.size());
             client.close();
             server.close();
-        }catch (Exception e){
-            e.printStackTrace();
-
+        }catch (Exception ignored){
         }
     }
 
@@ -260,9 +237,7 @@ public class ServerTest {
             assertNotEquals(serverOperation.getServerState(), ServerState.LOADING);
             client.close();
             server.close();
-        } catch (Exception e){
-            e.printStackTrace();
-
+        } catch (Exception ignored){
         }
     }
 

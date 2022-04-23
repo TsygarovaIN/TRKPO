@@ -1,8 +1,12 @@
 package nio;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -14,9 +18,17 @@ public class ResultTest {
     static Operand op4 = new Operand(OperandType.EMPTY, 7, OperandType.MULT);
     static Operand op5 = new Operand(OperandType.ABS, -3, OperandType.EQUALS);
 
-    static List<Operand> operands = List.of(op1, op2, op3, op4, op5);
+    static List<Operand> operands = listOf(op1, op2, op3, op4, op5);
 
     private static int idCounter = 1;
+
+
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(20);
 
     @Test
     public void getId() {

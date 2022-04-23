@@ -2,19 +2,18 @@ plugins {
     id 'java'
 }
 
-group 'java-tasks-HW10'
+group 'TRKPO'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.9
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'junit:junit:4.13.1'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
     testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
-    testCompile("org.assertj:assertj-core:3.11.1")
+    testCompile('org.assertj:assertj-core:3.22.0')
 }
-targetCompatibility = JavaVersion.VERSION_1_9

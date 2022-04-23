@@ -1,13 +1,15 @@
 package nio;
 
-import nio.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,8 +27,8 @@ public class ClientTest {
     static Operand op4 = new Operand(OperandType.EMPTY, 7, OperandType.MULT);
     static Operand op5 = new Operand(OperandType.ABS, -3, OperandType.EQUALS);
 
-    static List<Operand> operands = List.of(op1, op2, op3, op4, op5);
-    static List<Operand> partOfOperands = List.of(op1, op2, op3, op4);
+    static List<Operand> operands = listOf(op1, op2, op3, op4, op5);
+    static List<Operand> partOfOperands = listOf(op1, op2, op3, op4);
     static List<Operand> operands2 = new ArrayList<>();
 
     static {
@@ -35,6 +37,13 @@ public class ClientTest {
         }
         operands2.add(op5);
     }
+
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(20);
 
     @Before
     public void init() {
@@ -87,7 +96,7 @@ public class ClientTest {
     @Test
     public void singleOperandCalculate() {
         try {
-            Assert.assertEquals(3, client.calculate(List.of(op5)).get(), 0.001);
+            Assert.assertEquals(3, client.calculate(listOf(op5)).get(), 0.001);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -97,7 +106,7 @@ public class ClientTest {
     public void invalidOperandCalculate() {
         Client client = new Client(new int[]{ports[1]}, ++serverPort, 1);
         try {
-            Assert.assertEquals(Double.NaN, client.calculate(List.of(op1, op2, op3)).get(), 0.001);
+            Assert.assertEquals(Double.NaN, client.calculate(listOf(op1, op2, op3)).get(), 0.001);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -244,7 +253,9 @@ public class ClientTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void nEqualsOperands() {
-        client.calculate(List.of(op1));
+        List<Operand> operandss = new ArrayList<>();
+        operandss.add(op1);
+        client.calculate(operandss);
     }
 
     @Test(expected = NullPointerException.class)

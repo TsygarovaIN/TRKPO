@@ -8,25 +8,26 @@ import nio.ServerState;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static nio.Server.ClientInfo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
 public class SystemTests {
 
-    static int clientPortsCounter = 8101;
-    static int serverPortsCounter = 8181;
+    static int clientPortsCounter = 9001;
+    static int serverPortsCounter = 9191;
     static int[] ports;
     static Server server;
 
@@ -43,10 +44,10 @@ public class SystemTests {
     static Operand op8 = new Operand(OperandType.EMPTY, 50, OperandType.MINUS);
     static Operand op9 = new Operand(OperandType.LN, Math.E, OperandType.EQUALS);
 
-    static List<Operand> partOfOperands = List.of(op1, op2, op4, op5);
-    static List<Operand> operands1 = List.of(op4, op5, op6);
+    static List<Operand> partOfOperands = listOf(op1, op2, op4, op5);
+    static List<Operand> operands1 = listOf(op4, op5, op6);
     static List<Operand> operands2 = new ArrayList<>();
-    static List<Operand> operands3 = List.of(op7, op8, op9);
+    static List<Operand> operands3 = listOf(op7, op8, op9);
 
     static {
         for (int i = 0; i < 1000; i++) {
@@ -55,6 +56,13 @@ public class SystemTests {
         operands2.add(op6);
 
     }
+
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
+    }
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(30);
 
     @Before
     public void startServer() {
@@ -144,11 +152,10 @@ public class SystemTests {
             assertEquals(3.2625158429879466,result2.get(), EPS);
             assertEquals(149, result3.get(), EPS);
             ClientInfo clientInfo = server.getClientInfo(client.getClientId());
-            Set<Integer> resultIds = Set.of(
-                    result1.getId(),
-                    result2.getId(),
-                    result3.getId()
-            );
+            Set<Integer> resultIds = new HashSet<>();
+            resultIds.add(result1.getId());
+            resultIds.add(result2.getId());
+            resultIds.add(result3.getId());
             assertEquals(resultIds.size(), clientInfo.getResultIds().size());
             assertEquals(resultIds, clientInfo.getResultIds());
             ServerState serverState = server.getResultsMap().get(result2.getId()).getServerState();
@@ -208,10 +215,9 @@ public class SystemTests {
             r1.run();
             r2.run();
             r3.run();
-            Set<Integer> clientIds = Set.of(
-                    client1.getClientId(),
-                    client2.getClientId()
-            );
+            Set<Integer> clientIds = new HashSet<>();
+            clientIds.add(client1.getClientId());
+            clientIds.add(client2.getClientId());
             assertEquals(clientIds, server.getClients());
         } catch (Exception e) {
             Assert.assertNull(e);
