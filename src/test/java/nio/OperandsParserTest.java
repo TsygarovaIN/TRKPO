@@ -46,7 +46,7 @@ public class OperandsParserTest {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(20);
+    public Timeout globalTimeout = Timeout.seconds(1000);
 
     @Test
     public void parseAndCalculateSimple() {

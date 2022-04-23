@@ -26,10 +26,8 @@ public class ResultTest {
     private static List<Operand> listOf(Operand... operands) {
         return new ArrayList<>(Arrays.asList(operands));
     }
-
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(20);
-
+    public Timeout globalTimeout = Timeout.seconds(1000);
     @Test
     public void getId() {
         Result result = new Result(idCounter++);

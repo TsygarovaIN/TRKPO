@@ -58,8 +58,7 @@ public class IntegrationsTests {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(100);
-
+    public Timeout globalTimeout = Timeout.seconds(1000);
     @Test
     public void simpleTest() {
         try {

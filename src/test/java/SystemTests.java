@@ -62,8 +62,7 @@ public class SystemTests {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(100);
-
+    public Timeout globalTimeout = Timeout.seconds(1000);
     @Before
     public void startServer() {
         ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
