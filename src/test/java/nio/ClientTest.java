@@ -55,8 +55,6 @@ public class ClientTest {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            e.printStackTrace();
-
         }
         client = new Client(ports, ++serverPort, 4);
     }
@@ -72,7 +70,7 @@ public class ClientTest {
         }
     }
 
-
+    @Test
     public void singleClientCalculate() {
         client.close();
         client = new Client(new int[]{portsCounter - 1}, serverPort, 1);

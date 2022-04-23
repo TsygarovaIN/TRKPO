@@ -5,15 +5,21 @@ plugins {
 group 'TRKPO'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 
 repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
-    implementation 'junit:junit:4.13.1'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
-    testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
-    testCompile('org.assertj:assertj-core:3.22.0')
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
 }
