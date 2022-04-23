@@ -62,7 +62,7 @@ public class SystemTests {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(30);
+    public Timeout globalTimeout = Timeout.seconds(100);
 
     @Before
     public void startServer() {

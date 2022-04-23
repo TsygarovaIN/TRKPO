@@ -44,7 +44,7 @@ public class ClientServerTest {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(20);
+    public Timeout globalTimeout = Timeout.seconds(100);
 
     @Test
     public void single_server_single_client_single_ports() {
