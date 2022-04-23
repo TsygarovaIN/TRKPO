@@ -34,7 +34,8 @@ public class ServerTest {
     }
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(1000);
+    public Timeout globalTimeout = Timeout.seconds(30);
+
     @Before
     public void init() {
         ports = new int[]{++portsCounter, ++portsCounter, ++portsCounter};
@@ -160,8 +161,7 @@ public class ServerTest {
             assertEquals(serverOperation.getReceivingCalculationLocks().size(), Math.min(operands.size(), currThreadsCountForSend));
             client.close();
             server.close();
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception ignored){
 
         }
     }
