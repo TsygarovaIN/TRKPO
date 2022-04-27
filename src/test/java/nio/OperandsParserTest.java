@@ -40,7 +40,7 @@ public class OperandsParserTest {
     private final Operand op17 = new Operand(OperandType.SIN, Math.PI, OperandType.EQUALS);
     private final Operand op18 = new Operand(OperandType.COS, Math.PI, OperandType.EQUALS);
     private final Operand op19 = new Operand(OperandType.ABS, Math.PI, OperandType.EQUALS);
-    
+
     private static List<Operand> listOf(Operand... operands) {
         return new ArrayList<>(Arrays.asList(operands));
     }

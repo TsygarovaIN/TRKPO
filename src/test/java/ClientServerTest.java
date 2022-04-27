@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,7 +21,7 @@ import static org.junit.Assert.assertNull;
 public class ClientServerTest {
 
     static int clientPortsCounter = 2001;
-    static int serverPortsCounter = 2101;
+    static int serverPortsCounter = 4101;
     private static final AtomicInteger resultIdCounter = new AtomicInteger(1);
 
     static Operand op1 = new Operand(OperandType.COS, 10, OperandType.PLUS);
@@ -28,9 +30,14 @@ public class ClientServerTest {
     static Operand op4 = new Operand(OperandType.SQUARE, 100, OperandType.PLUS);
     static Operand op5 = new Operand(OperandType.EMPTY, 7, OperandType.MULT);
     static Operand op6 = new Operand(OperandType.ABS, -3, OperandType.EQUALS);
+    static Operand op7 = new Operand(OperandType.EMPTY, 100, OperandType.PLUS);
+    static Operand op8 = new Operand(OperandType.EMPTY, 50, OperandType.MINUS);
+    static Operand op9 = new Operand(OperandType.LN, Math.E, OperandType.EQUALS);
 
     static List<Operand> partOfOperands = new ArrayList<>();
     static List<Operand> operands2 = new ArrayList<>();
+    static List<Operand> operands1 = listOf(op4, op5, op6);
+    static List<Operand> operands3 = listOf(op7, op8, op9);
 
     static {
         partOfOperands.add(op1);
@@ -41,6 +48,10 @@ public class ClientServerTest {
             operands2.addAll(partOfOperands);
         }
         operands2.add(op6);
+    }
+
+    private static List<Operand> listOf(Operand... operands) {
+        return new ArrayList<>(Arrays.asList(operands));
     }
 
     @Rule
@@ -105,7 +116,8 @@ public class ClientServerTest {
     @Test
     public void multi_server_single_client_multi_ports() {
         try {
-            System.out.println(getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++},
+            System.out.println(getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
+                            clientPortsCounter++, clientPortsCounter++},
                     serverPortsCounter++, 5, 1));
         } catch (Exception e) {
             assertNull(e);
@@ -115,7 +127,8 @@ public class ClientServerTest {
     @Test
     public void multi_server_multi_client_multi_ports() {
         try {
-            System.out.println(getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++},
+            System.out.println(getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
+                            clientPortsCounter++, clientPortsCounter++},
                     serverPortsCounter++, 5, 5));
         } catch (Exception e) {
             assertNull(e);
@@ -131,6 +144,7 @@ public class ClientServerTest {
             Client client = new Client(ports, serverPort, clientThreads);
             long m = System.currentTimeMillis();
             CountDownLatch countDownLatch = new CountDownLatch(10);
+
             for (int i = 0; i < 10; i++) {
                 client.calculate(operands2);
             }

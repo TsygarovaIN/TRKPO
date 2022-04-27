@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static nio.Server.ClientInfo;
 import static org.junit.Assert.assertEquals;
@@ -27,8 +29,9 @@ import static org.junit.Assert.assertTrue;
 
 public class IntegrationsTests {
 
-    static int clientPortsCounter = 8101;
-    static int serverPortsCounter = 8181;
+    static int clientPortsCounter = 9192;
+    static int serverPortsCounter = 9281;
+    private static final AtomicInteger resultIdCounter = new AtomicInteger(1);
 
     static Operand op1 = new Operand(OperandType.COS, 10, OperandType.PLUS);
     static Operand op2 = new Operand(OperandType.EMPTY, 5, OperandType.MINUS);
@@ -60,6 +63,7 @@ public class IntegrationsTests {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(120);
 
+    //1I
     @Test
     public void simpleTest() {
         try {
@@ -71,9 +75,11 @@ public class IntegrationsTests {
             assertEquals(51, client.calculate(operands1).get(), 0.000000001);
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //2I
     @Test
     public void multiClientsTest() {
         try {
@@ -90,9 +96,12 @@ public class IntegrationsTests {
             assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+
+    //3I
     @Test
     public void threeClientsTestMultiThreading() {
         try {
@@ -145,6 +154,7 @@ public class IntegrationsTests {
         }
     }
 
+    //4I
     @Test
     public void oneClientManyOpsTest() {
         try {
@@ -169,9 +179,11 @@ public class IntegrationsTests {
             assertEquals(resultIds, clientInfo.getResultIds());
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //5I
     @Test
     public void threeClientManyOpsTest() {
         try {
@@ -212,9 +224,11 @@ public class IntegrationsTests {
             assertTrue(clientInfo2.isClosed());
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //6I
     @Test
     public void closeTest() {
         try {
@@ -234,6 +248,7 @@ public class IntegrationsTests {
         }
     }
 
+    //7I
     @Test
     public void cancelResult() {
         try {
@@ -249,9 +264,11 @@ public class IntegrationsTests {
             assertTrue(server.getOperationsForClient(client.getClientId()).isEmpty());
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //8I
     @Test
     public void cancelDoneResult() {
         try {
@@ -275,11 +292,13 @@ public class IntegrationsTests {
             assertEquals(ClientState.DONE, result3.getState());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //9I
     @Test
-    public void serverOperationsTest() {
+    public void serverOperationsTestGetDoneResult() {
         try {
             int[] ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
             Server server = new Server(ports, 4);
@@ -307,9 +326,77 @@ public class IntegrationsTests {
                 assertTrue(serverState == ServerState.WAITING_TO_SEND || serverState == ServerState.DONE);
                 assertFalse(result.isWaiting());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertNull(e);
+        }
+    }
+
+    //10I
+    @Test
+    public void serverOperationsTestCheckPortsAfterGetResult() {
+        try {
+            int[] ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
+            Server server = new Server(ports, 4);
+            Runnable serverRunnable = server::start;
+            serverRunnable.run();
+            Thread.sleep(1000);
+            Client client = new Client(new int[]{ports[0], ports[1], ports[2]}, serverPortsCounter++, 3);
+            Result result1 = client.calculate(operands1);
+            Result result2 = client.calculate(operands2);
+            Result result3 = client.calculate(operands3);
+            Result result4 = client.calculate(operands1);
+            Result result5 = client.calculate(operands2);
+            Result result6 = client.calculate(operands3);
+            List<Result> results = new ArrayList<>();
+            results.add(result1);
+            results.add(result2);
+            results.add(result3);
+            results.add(result4);
+            results.add(result5);
+            results.add(result6);
+            Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
+            for (Result result : results) {
+                result.get();
+                ServerState serverState = serverOperationMap.get(result.getId()).getServerState();
+            }
             assertEquals(serverPortsCounter - 1, serverOperationMap.get(result1.getId()).getAnswerPort());
             assertEquals(serverPortsCounter - 1, serverOperationMap.get(result2.getId()).getAnswerPort());
             assertEquals(serverPortsCounter - 1, serverOperationMap.get(result4.getId()).getAnswerPort());
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertNull(e);
+        }
+    }
+
+    //11I
+    @Test
+    public void serverOperationsTestCheckOperands() {
+        try {
+            int[] ports = new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++};
+            Server server = new Server(ports, 4);
+            Runnable serverRunnable = server::start;
+            serverRunnable.run();
+            Thread.sleep(1000);
+            Client client = new Client(new int[]{ports[0], ports[1], ports[2]}, serverPortsCounter++, 3);
+            Result result1 = client.calculate(operands1);
+            Result result2 = client.calculate(operands2);
+            Result result3 = client.calculate(operands3);
+            Result result4 = client.calculate(operands1);
+            Result result5 = client.calculate(operands2);
+            Result result6 = client.calculate(operands3);
+            List<Result> results = new ArrayList<>();
+            results.add(result1);
+            results.add(result2);
+            results.add(result3);
+            results.add(result4);
+            results.add(result5);
+            results.add(result6);
+            Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
+            for (Result result : results) {
+                result.get();
+            }
+
             assertEquals(operands1.size(), serverOperationMap.get(result1.getId()).getTotalOperands());
             assertEquals(operands1.size(), serverOperationMap.get(result4.getId()).getTotalOperands());
             assertEquals(operands2.size(), serverOperationMap.get(result2.getId()).getTotalOperands());
@@ -318,21 +405,130 @@ public class IntegrationsTests {
             assertEquals(operands3.size(), serverOperationMap.get(result6.getId()).getTotalOperands());
         } catch (Exception e) {
             e.printStackTrace();
+            assertNull(e);
         }
     }
 
+    //12I
     @Test(expected = NullPointerException.class)
     public void nullPorts() {
         new Client(null, 1000, 4);
     }
 
+    //13I
     @Test(expected = IllegalArgumentException.class)
     public void negServerPort() {
         new Client(new int[]{1000}, -1000, 4);
     }
 
+    //14I
     @Test(expected = IllegalArgumentException.class)
     public void negThreadsCount() {
         new Client(new int[]{1000}, 1000, -4);
+    }
+
+    //15I
+    @Test
+    public void single_server_single_client_single_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++}, serverPortsCounter++, 1, 1);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    //16I
+    @Test
+    public void multi_server_single_client_single_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++}, serverPortsCounter++, 5, 1);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    //17I
+    @Test
+    public void single_server_multi_client_single_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++}, serverPortsCounter++, 1, 5);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    //18I
+    @Test
+    public void multi_server_multi_client_single_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++}, serverPortsCounter++, 5, 5);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    //19I
+    @Test
+    public void single_server_single_client_multi_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++},
+                    serverPortsCounter++, 1, 1);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    //20I
+    @Test
+    public void single_server_multi_client_multi_ports() {
+        try {
+            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++, clientPortsCounter++},
+                    serverPortsCounter++, 1, 5);
+            System.out.println(time);
+            assertTrue(time < 3000);
+        } catch (Exception e) {
+            assertNull(e);
+        }
+    }
+
+    private double getCalculationTime(int[] ports, int serverPort, int serverThreads, int clientThreads) {
+        try {
+            Server server = new Server(ports, serverThreads);
+            Runnable serverRunnable = server::start;
+            serverRunnable.run();
+            Thread.sleep(1000);
+            Client client = new Client(ports, serverPort, clientThreads);
+            long m = System.currentTimeMillis();
+            CountDownLatch countDownLatch = new CountDownLatch(10);
+
+            for (int i = 0; i < 10; i++) {
+                client.calculate(operands2);
+            }
+            for (int i = 0; i < 10; i++) {
+                Runnable runnable = () -> {
+                    try {
+                        assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
+                        countDownLatch.countDown();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                };
+                runnable.run();
+            }
+            countDownLatch.await();
+            return System.currentTimeMillis() - m;
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 }
