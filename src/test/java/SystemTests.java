@@ -282,159 +282,187 @@ public class SystemTests {
         }
     }
 
+//    @Test
+//    public void volume_testing() {
+//        try {
+//            double time = 0;
+//            for (int i = 0; i < 100; i++) {
+//                time += getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++}, serverPortsCounter++,
+//                        10, 10);
+//            }
+//            System.out.println(time);
+//        } catch (Exception e) {
+//            assertNull(e);
+//        }
+//    }
+//
+//    @Test
+//    public void load_test() {
+//        try {
+//            int[] ports = new int[50];
+//            for (int i = 0; i < 50; i++) {
+//                ports[i] = clientPortsCounter++;
+//            }
+//            Server server = new Server(ports, 2);
+//            Runnable serverRunnable = server::start;
+//            serverRunnable.run();
+//            Thread.sleep(1000);
+//            Client client1 = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
+//            Client client2 = new Client(new int[]{clientPortsCounter - 1, clientPortsCounter - 2, clientPortsCounter - 3}, serverPortsCounter++, 4);
+//            Client client3 = new Client(new int[]{clientPortsCounter - 2, clientPortsCounter - 4, clientPortsCounter - 5}, serverPortsCounter++, 4);
+//            Client client4 = new Client(new int[]{clientPortsCounter - 8, clientPortsCounter - 9, clientPortsCounter - 10}, serverPortsCounter++, 4);
+//            Client client5 = new Client(new int[]{clientPortsCounter - 11, clientPortsCounter - 12} , serverPortsCounter++, 4);
+//            Client client6 = new Client(new int[]{clientPortsCounter - 13, clientPortsCounter - 14, clientPortsCounter - 15}, serverPortsCounter++, 4);
+//            Client client7 = new Client(new int[]{clientPortsCounter - 16}, serverPortsCounter++, 4);
+//            Client client8 = new Client(new int[]{clientPortsCounter- 17, clientPortsCounter - 18, clientPortsCounter - 19}, serverPortsCounter++, 4);
+//            Client client9 = new Client(new int[]{clientPortsCounter - 20, clientPortsCounter - 21, clientPortsCounter - 22}, serverPortsCounter++, 4);
+//            Client client10 = new Client(new int[]{clientPortsCounter - 23, clientPortsCounter - 24, clientPortsCounter - 25}, serverPortsCounter++, 4);
+//            Runnable r1 = () -> {
+//                try {
+//                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            };
+//            Runnable r2 = () -> {
+//                try {
+//                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            };
+//            Runnable r3 = () -> {
+//                try {
+//                    assertEquals(149, client1.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client3.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
+//                    assertEquals(51, client2.calculate(operands1).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r4 = () -> {
+//                try {
+//                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
+//                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r5 = () -> {
+//                try {
+//                    assertEquals(149, client5.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client4.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(3.2625158429879466, client5.calculate(operands2).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r6 = () -> {
+//                try {
+//                    assertEquals(149, client6.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client6.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client6.calculate(operands3).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r7 = () -> {
+//                try {
+//                    assertEquals(149, client7.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client3.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r8 = () -> {
+//                try {
+//                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client8.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(3.2625158429879466, client5.calculate(operands2).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r9 = () -> {
+//                try {
+//                    assertEquals(149, client9.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client2.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client2.calculate(operands3).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            Runnable r10 = () -> {
+//                try {
+//                    assertEquals(149, client10.calculate(operands3).get(), 0.000000001);
+//                    assertEquals(51, client9.calculate(operands1).get(), 0.000000001);
+//                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            r1.run();
+//            r2.run();
+//            r3.run();
+//            r4.run();
+//            r5.run();
+//            r6.run();
+//            r7.run();
+//            r8.run();
+//            r9.run();
+//            r10.run();
+//            Set<Integer> clientIds = Set.of(
+//                    client1.getClientId(),
+//                    client2.getClientId(),
+//                    client3.getClientId(),
+//                    client4.getClientId(),
+//                    client5.getClientId(),
+//                    client6.getClientId(),
+//                    client7.getClientId(),
+//                    client8.getClientId(),
+//                    client9.getClientId(),
+//                    client10.getClientId()
+//            );
+//            assertEquals(clientIds, server.getClients());
+//        } catch (Exception e) {
+//            assertNull(e);
+//        }
+//    }
+
+    //12S
     @Test
-    public void volume_testing() {
+    public void multi_server_single_client_multi_ports() {
         try {
-            double time = 0;
-            for (int i = 0; i < 100; i++) {
-                time += getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++}, serverPortsCounter++,
-                        10, 10);
-            }
+            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
+                            clientPortsCounter++, clientPortsCounter++},
+                    serverPortsCounter++, 5, 1);
             System.out.println(time);
+            assertTrue(time < 3000);
         } catch (Exception e) {
             assertNull(e);
         }
     }
 
+    //13S
     @Test
-    public void load_test() {
+    public void multi_server_multi_client_multi_ports() {
         try {
-            int[] ports = new int[50];
-            for (int i = 0; i < 50; i++) {
-                ports[i] = clientPortsCounter++;
-            }
-            Server server = new Server(ports, 2);
-            Runnable serverRunnable = server::start;
-            serverRunnable.run();
-            Thread.sleep(1000);
-            Client client1 = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
-            Client client2 = new Client(new int[]{clientPortsCounter - 1, clientPortsCounter - 2, clientPortsCounter - 3}, serverPortsCounter++, 4);
-            Client client3 = new Client(new int[]{clientPortsCounter - 2, clientPortsCounter - 4, clientPortsCounter - 5}, serverPortsCounter++, 4);
-            Client client4 = new Client(new int[]{clientPortsCounter - 8, clientPortsCounter - 9, clientPortsCounter - 10}, serverPortsCounter++, 4);
-            Client client5 = new Client(new int[]{clientPortsCounter - 11, clientPortsCounter - 12} , serverPortsCounter++, 4);
-            Client client6 = new Client(new int[]{clientPortsCounter - 13, clientPortsCounter - 14, clientPortsCounter - 15}, serverPortsCounter++, 4);
-            Client client7 = new Client(new int[]{clientPortsCounter - 16}, serverPortsCounter++, 4);
-            Client client8 = new Client(new int[]{clientPortsCounter- 17, clientPortsCounter - 18, clientPortsCounter - 19}, serverPortsCounter++, 4);
-            Client client9 = new Client(new int[]{clientPortsCounter - 20, clientPortsCounter - 21, clientPortsCounter - 22}, serverPortsCounter++, 4);
-            Client client10 = new Client(new int[]{clientPortsCounter - 23, clientPortsCounter - 24, clientPortsCounter - 25}, serverPortsCounter++, 4);
-            Runnable r1 = () -> {
-                try {
-                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            };
-            Runnable r2 = () -> {
-                try {
-                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
-                    assertEquals(51, client1.calculate(operands1).get(), 0.000000001);
-                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            };
-            Runnable r3 = () -> {
-                try {
-                    assertEquals(149, client1.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client3.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
-                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
-                    assertEquals(51, client2.calculate(operands1).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r4 = () -> {
-                try {
-                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
-                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), 0.000000001);
-                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r5 = () -> {
-                try {
-                    assertEquals(149, client5.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client4.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client4.calculate(operands3).get(), 0.000000001);
-                    assertEquals(3.2625158429879466, client5.calculate(operands2).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r6 = () -> {
-                try {
-                    assertEquals(149, client6.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client6.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client6.calculate(operands3).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r7 = () -> {
-                try {
-                    assertEquals(149, client7.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client3.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client3.calculate(operands3).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r8 = () -> {
-                try {
-                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client8.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
-                    assertEquals(3.2625158429879466, client5.calculate(operands2).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r9 = () -> {
-                try {
-                    assertEquals(149, client9.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client2.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client2.calculate(operands3).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            Runnable r10 = () -> {
-                try {
-                    assertEquals(149, client10.calculate(operands3).get(), 0.000000001);
-                    assertEquals(51, client9.calculate(operands1).get(), 0.000000001);
-                    assertEquals(149, client8.calculate(operands3).get(), 0.000000001);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            r1.run();
-            r2.run();
-            r3.run();
-            r4.run();
-            r5.run();
-            r6.run();
-            r7.run();
-            r8.run();
-            r9.run();
-            r10.run();
-            Set<Integer> clientIds = Set.of(
-                    client1.getClientId(),
-                    client2.getClientId(),
-                    client3.getClientId(),
-                    client4.getClientId(),
-                    client5.getClientId(),
-                    client6.getClientId(),
-                    client7.getClientId(),
-                    client8.getClientId(),
-                    client9.getClientId(),
-                    client10.getClientId()
-            );
-            assertEquals(clientIds, server.getClients());
+            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
+                            clientPortsCounter++, clientPortsCounter++},
+                    serverPortsCounter++, 5, 5);
+            System.out.println(time);
+            assertTrue(time < 3000);
         } catch (Exception e) {
             assertNull(e);
         }
