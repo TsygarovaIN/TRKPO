@@ -442,28 +442,24 @@ public class SystemTests {
 
     //12S
     @Test
-    public void multi_server_single_client_multi_ports() {
+    public void calculateWithDeadlineTrue() {
         try {
-            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
-                            clientPortsCounter++, clientPortsCounter++},
-                    serverPortsCounter++, 5, 1);
-            System.out.println(time);
-            assertTrue(time < 3000);
+            Client client = new Client(new int[]{ports[0]}, serverPortsCounter++, 1);
+            client.calculateWithDeadline(operands2, 3000);
+            assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
         } catch (Exception e) {
             assertNull(e);
         }
     }
 
     //13S
-    @Test
-    public void multi_server_multi_client_multi_ports() {
+    @Test(expected = RuntimeException.class)
+    public void calculateWithDeadlineFalse() {
         try {
-            double time = getCalculationTime(new int[]{clientPortsCounter++, clientPortsCounter++, clientPortsCounter++,
-                            clientPortsCounter++, clientPortsCounter++},
-                    serverPortsCounter++, 5, 5);
-            System.out.println(time);
-            assertTrue(time < 3000);
-        } catch (Exception e) {
+            Client client = new Client(new int[]{ports[0]}, serverPortsCounter++, 1);
+            client.calculateWithDeadline(operands2, 1);
+            assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
+        } catch (InterruptedException e){
             assertNull(e);
         }
     }
@@ -530,34 +526,34 @@ public class SystemTests {
         client.calculate(operands);
     }
 
-    private double getCalculationTime(int[] ports, int serverPort, int serverThreads, int clientThreads) {
-        try {
-            Server server = new Server(ports, serverThreads);
-            Runnable serverRunnable = server::start;
-            serverRunnable.run();
-            Thread.sleep(1000);
-            Client client = new Client(ports, serverPort, clientThreads);
-            long m = System.currentTimeMillis();
-            CountDownLatch countDownLatch = new CountDownLatch(10);
-
-            for (int i = 0; i < 10; i++) {
-                client.calculate(operands2);
-            }
-            for (int i = 0; i < 10; i++) {
-                Runnable runnable = () -> {
-                    try {
-                        assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
-                        countDownLatch.countDown();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                };
-                runnable.run();
-            }
-            countDownLatch.await();
-            return System.currentTimeMillis() - m;
-        } catch (Exception e) {
-            return 0.0;
-        }
-    }
+//    private double getCalculationTime(int[] ports, int serverPort, int serverThreads, int clientThreads) {
+//        try {
+//            Server server = new Server(ports, serverThreads);
+//            Runnable serverRunnable = server::start;
+//            serverRunnable.run();
+//            Thread.sleep(1000);
+//            Client client = new Client(ports, serverPort, clientThreads);
+//            long m = System.currentTimeMillis();
+//            CountDownLatch countDownLatch = new CountDownLatch(10);
+//
+//            for (int i = 0; i < 10; i++) {
+//                client.calculate(operands2);
+//            }
+//            for (int i = 0; i < 10; i++) {
+//                Runnable runnable = () -> {
+//                    try {
+//                        assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
+//                        countDownLatch.countDown();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                };
+//                runnable.run();
+//            }
+//            countDownLatch.await();
+//            return System.currentTimeMillis() - m;
+//        } catch (Exception e) {
+//            return 0.0;
+//        }
+//    }
 }

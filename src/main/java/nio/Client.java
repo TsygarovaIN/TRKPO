@@ -174,6 +174,63 @@ public class Client {
         return calculatingResult;
     }
 
+    public Result calculateWithDeadline(List<Operand> operands, long millis) {
+        long m = System.currentTimeMillis();
+        if (operands == null) {
+            throw new NullPointerException();
+        }
+        if (!operands.get(operands.size()-1).getOperationSecond().equals(OperandType.EQUALS)) {
+            throw new IllegalArgumentException();
+        }
+        int maxThreadsCanUsed = Math.min(operands.size(), threadsCountForSend);
+        int resultId = resultIdCounter.getAndIncrement();
+        Result calculatingResult = new Result(resultId);
+        calculatingResult.setClient(this);
+        calculatingResult.setState(ClientState.START);
+        resultMap.put(resultId, calculatingResult);
+        long result = System.currentTimeMillis() - m;
+        if(result > millis) {
+            throw new RuntimeException("Exceeded the time limit for calculations");
+        }
+        int oneChannelOperandsNumber = operands.size() / maxThreadsCanUsed;
+        int leastChannelOperandsNumber = oneChannelOperandsNumber + operands.size() % maxThreadsCanUsed;
+        Runnable runnable1 = () -> {
+            List<Operand> list = operands.subList(0, leastChannelOperandsNumber);
+            try {
+                resultMap.get(resultId).setState(ClientState.SENDING);
+                sendMetaDataWithChannel(sendingChannels.get(0), resultId, serverPort, operands.size());
+                sendWithChannel(sendingChannels.get(0), resultId, list, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+        result = System.currentTimeMillis() - m;
+        if(result > millis) {
+            throw new RuntimeException("Exceeded the time limit for calculations");
+        }
+        executor.execute(runnable1);
+        for (int i = 1; i < maxThreadsCanUsed; i++) {
+            int finalI = i;
+            Runnable runnable = () -> {
+                int k = leastChannelOperandsNumber + (finalI - 1) * oneChannelOperandsNumber;
+                List<Operand> list = operands.subList(k, k + oneChannelOperandsNumber);
+                try {
+                    sendWithChannel(sendingChannels.get(finalI % clientsPort.length), resultId, list, finalI + 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+            executor.execute(runnable);
+        }
+        resultMap.get(resultId).setState(ClientState.SENT);
+        result = System.currentTimeMillis() - m;
+        if(result <= millis) {
+            return calculatingResult;
+        } else {
+            throw new RuntimeException("Exceeded the time limit for calculations");
+        }
+    }
+
     public void cancelResult(int id) throws IOException {
         if (!resultMap.containsKey(id)) {
             throw new RuntimeException("There is no result with id = " + id);
