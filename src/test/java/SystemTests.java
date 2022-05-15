@@ -158,7 +158,9 @@ public class SystemTests {
             Result result2 = client.calculate(operands2);
             Result result3 = client.calculate(operands3);
             assertEquals(51, result1.get(), EPS);
+            Thread.sleep(1000);
             assertEquals(3.2625158429879466,result2.get(), EPS);
+            Thread.sleep(1000);
             assertEquals(149, result3.get(), EPS);
             ClientInfo clientInfo = server.getClientInfo(client.getClientId());
             Set<Integer> resultIds = new HashSet<>();
@@ -180,7 +182,8 @@ public class SystemTests {
         try {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             Result result2 = client.calculate(operands2);
-            assertEquals(3.2625158429879466,result2.get(), EPS);
+            Thread.sleep(1000);
+            assertEquals(3.2625158429879466, result2.get(), EPS);
             Result result = client.calculate(operands1);
             client.cancelResult(result.getId());
             Assert.assertTrue( result.getState() == ClientState.CANCEL || result.getState() == ClientState.SENDING);
@@ -445,8 +448,8 @@ public class SystemTests {
     public void acalculateWithDeadlineTrue() {
         try {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
-            client.calculateWithDeadline(operands2, 3000);
-            assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
+            Result result = client.calculateWithDeadline(operands2, 3000);
+            assertEquals(3.26251584, result.get(), 0.001);
         } catch (Exception e) {
             assertNull(e);
         }
@@ -457,8 +460,8 @@ public class SystemTests {
     public void calculateWithDeadlineFalse() {
         try {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
-            client.calculateWithDeadline(operands2, 1);
-            assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
+            Result result = client.calculateWithDeadline(operands2, 1);
+            assertEquals(3.26251584, result.get(), 0.001);
         } catch (InterruptedException e){
             assertNull(e);
         }
