@@ -47,7 +47,7 @@ public class ClientTest {
 
     @Before
     public void init() {
-        ports = new int[]{++portsCounter, ++portsCounter, ++portsCounter};
+        ports = new int[]{portsCounter++, portsCounter++, portsCounter++};
         server = new Server(ports, serverThreads);
         Runnable serverRunnable = server::start;
         serverRunnable.run();
@@ -56,7 +56,7 @@ public class ClientTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client = new Client(ports, ++serverPort, 4);
+        client = new Client(ports, serverPort++, 4);
     }
 
     @After

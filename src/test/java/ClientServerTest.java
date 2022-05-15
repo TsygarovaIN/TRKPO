@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNull;
 
 public class ClientServerTest {
 
-    static int clientPortsCounter = 2001;
-    static int serverPortsCounter = 4101;
+    static int clientPortsCounter = 8001;
+    static int serverPortsCounter = 10101;
     private static final AtomicInteger resultIdCounter = new AtomicInteger(1);
 
     static Operand op1 = new Operand(OperandType.COS, 10, OperandType.PLUS);

@@ -27,8 +27,8 @@ import static org.junit.Assert.assertTrue;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SystemTests {
 
-    static int clientPortsCounter = 8001;
-    static int serverPortsCounter = 9191;
+    static int clientPortsCounter =9001;
+    static int serverPortsCounter = 9691;
     private static final AtomicInteger resultIdCounter = new AtomicInteger(1);
     static int[] ports;
     static Server server;
@@ -442,9 +442,9 @@ public class SystemTests {
 
     //12S
     @Test
-    public void calculateWithDeadlineTrue() {
+    public void acalculateWithDeadlineTrue() {
         try {
-            Client client = new Client(new int[]{ports[0]}, serverPortsCounter++, 1);
+            Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             client.calculateWithDeadline(operands2, 3000);
             assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
         } catch (Exception e) {
@@ -456,7 +456,7 @@ public class SystemTests {
     @Test(expected = RuntimeException.class)
     public void calculateWithDeadlineFalse() {
         try {
-            Client client = new Client(new int[]{ports[0]}, serverPortsCounter++, 1);
+            Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             client.calculateWithDeadline(operands2, 1);
             assertEquals(3.26251584, client.getResult(resultIdCounter.getAndIncrement()).get(), 0.001);
         } catch (InterruptedException e){
