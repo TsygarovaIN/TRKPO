@@ -74,7 +74,7 @@ public class IntegrationsTests {
             Thread.sleep(1000);
             Client client = new Client(new int[]{clientPortsCounter++}, serverPortsCounter++, 4);
             assertEquals(51, client.calculate(operands1).get(), 0.000000001);
-            server.close();
+            //server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -98,7 +98,7 @@ public class IntegrationsTests {
             Result result3 = client3.calculate(operands3);
             Thread.sleep(1000);
             assertEquals(51, result1.get(), 0.000000001);
-            server.close();
+           // server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -118,7 +118,7 @@ public class IntegrationsTests {
             Client client2 = new Client(new int[]{clientPortsCounter - 1, clientPortsCounter - 2, clientPortsCounter - 3}, serverPortsCounter++, 4);
             Client client3 = new Client(new int[]{clientPortsCounter - 2, clientPortsCounter - 4, clientPortsCounter - 5}, serverPortsCounter++, 4);
 
-            server.close();
+           // server.close();
         } catch (Exception e) {
             assertNull(e);
         }
@@ -140,7 +140,7 @@ public class IntegrationsTests {
             Thread.sleep(1000);
             ClientInfo clientInfo = server.getClientInfo(client.getClientId());
             Set<Integer> resultIds = new HashSet<>();
-            server.close();
+           // server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -165,7 +165,7 @@ public class IntegrationsTests {
             Result result31 = client3.calculate(operands1);
             ClientInfo clientInfo = server.getClientInfo(client1.getClientId());
 
-            server.close();
+            //server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -184,7 +184,7 @@ public class IntegrationsTests {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 3);
             Result result = client.calculate(operands1);
 
-            server.close();
+           // server.close();
         } catch (InterruptedException e) {
             assertNull(e);
         }
@@ -203,7 +203,7 @@ public class IntegrationsTests {
             Result result = client.calculate(operands1);
             client.cancelResult(result.getId());
             assertEquals(ClientState.CANCEL, result.getState());
-            server.close();
+            //server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -224,7 +224,7 @@ public class IntegrationsTests {
             result1.get();
             client.cancelResult(result1.getId());
             assertEquals(ClientState.DONE, result1.getState());
-            server.close();
+            //server.close();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             assertNull(e);
@@ -255,9 +255,9 @@ public class IntegrationsTests {
             results.add(result5);
             results.add(result6);
             Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
-            server.close();
+            //server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -288,7 +288,6 @@ public class IntegrationsTests {
             results.add(result5);
             results.add(result6);
             Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
-
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
@@ -320,7 +319,7 @@ public class IntegrationsTests {
             results.add(result6);
             Map<Integer, ServerOperation> serverOperationMap = server.getResultsMap();
 
-            server.close();
+            //server.close();
         } catch (Exception e) {
             e.printStackTrace();
             assertNull(e);
