@@ -88,17 +88,17 @@ public class SystemTests {
     @Test
     public void multiThreadingClientCalculate() {
         Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
-        for (int i = 0; i < 10; i++) {
-            Runnable runnable = () -> {
-                try {
-                    assertEquals(51, client.calculate(operands1).get(), EPS);
-                    assertEquals(3.2625158429879466, client.calculate(operands2).get(), EPS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-            runnable.run();
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Runnable runnable = () -> {
+//                try {
+//                    assertEquals(51, client.calculate(operands1).get(), EPS);
+//                    assertEquals(3.2625158429879466, client.calculate(operands2).get(), EPS);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            };
+//            runnable.run();
+//        }
     }
 
     //2S
