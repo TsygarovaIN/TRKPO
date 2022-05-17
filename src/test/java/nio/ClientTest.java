@@ -117,7 +117,7 @@ public class ClientTest {
             Thread.sleep(1000);
             Client client = new Client(ports, serverPort++, 1);
             //Assert.assertEquals(3, client.calculate(listOf(op5)).get(), 0.001);
-            client.close();
+            //client.close();
             server.close();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -153,7 +153,7 @@ public class ClientTest {
             Thread.sleep(1000);
             Client client = new Client(ports, serverPort++, 1);
             //Assert.assertEquals(3.26251584, client.calculate(operands2).get(), 0.001);
-            client.close();
+            //client.close();
             server.close();
         } catch (InterruptedException e) {
             e.printStackTrace();

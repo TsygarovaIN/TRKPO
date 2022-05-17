@@ -49,12 +49,12 @@ public class ServerTest {
         return server;
     }
 
-    @After
-    public void closeAll() {
-        if (client!=null ) {
-            client.close();
-        }
-    }
+//    @After
+//    public void closeAll() {
+//        if (client!=null ) {
+//            client.close();
+//        }
+//    }
 
     @Test
     public void startSingleServer() {
