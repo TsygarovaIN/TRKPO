@@ -88,17 +88,7 @@ public class SystemTests {
     @Test
     public void multiThreadingClientCalculate() {
         Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
-//        for (int i = 0; i < 10; i++) {
-//            Runnable runnable = () -> {
-//                try {
-//                    assertEquals(51, client.calculate(operands1).get(), EPS);
-//                    assertEquals(3.2625158429879466, client.calculate(operands2).get(), EPS);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            };
-//            runnable.run();
-//        }
+
     }
 
     //2S
@@ -108,8 +98,7 @@ public class SystemTests {
             Client client1 = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
             Client client2 = new Client(new int[]{clientPortsCounter - 2}, serverPortsCounter++, 4);
             Client client3 = new Client(new int[]{clientPortsCounter - 3}, serverPortsCounter++, 4);
-            assertEquals(51, client1.calculate(operands1).get(), EPS);
-            //assertEquals(3.2625158429879466, client2.calculate(operands2).get(), EPS);
+            assertEquals(51, client1.calculate(operands1).get(), EPS); 
             assertEquals(149, client3.calculate(operands3).get(), EPS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,18 +146,10 @@ public class SystemTests {
             Result result1 = client.calculate(operands1);
             Result result2 = client.calculate(operands2);
             Result result3 = client.calculate(operands3);
-            //assertEquals(51, result1.get(), EPS);
-            //assertEquals(3.2625158429879466,result2.get(), EPS);
-            //assertEquals(149, result3.get(), EPS);
+          
             ClientInfo clientInfo = server.getClientInfo(client.getClientId());
             Set<Integer> resultIds = new HashSet<>();
-//            resultIds.add(result1.getId());
-//            resultIds.add(result2.getId());
-//            resultIds.add(result3.getId());
-//            assertEquals(resultIds.size(), clientInfo.getResultIds().size());
-//            assertEquals(resultIds, clientInfo.getResultIds());
-//            ServerState serverState = server.getResultsMap().get(result2.getId()).getServerState();
-//            assertTrue(serverState == ServerState.DONE || serverState == ServerState.WAITING_TO_SEND);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,11 +162,11 @@ public class SystemTests {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             Result result2 = client.calculate(operands2);
             Thread.sleep(1000);
-            //assertEquals(3.2625158429879466, result2.get(), EPS);
+            
             Result result = client.calculate(operands1);
             client.cancelResult(result.getId());
             Assert.assertTrue( result.getState() == ClientState.CANCEL || result.getState() == ClientState.SENDING);
-            //assertEquals(server.getResultsMap().get(result2.getId()).getServerState(), ServerState.DONE);
+            
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -197,40 +178,30 @@ public class SystemTests {
         try {
             Client client1 = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
             Client client2 = new Client(new int[]{clientPortsCounter - 1, clientPortsCounter - 2, clientPortsCounter - 3}, serverPortsCounter++, 4);
-            Runnable r1 = () -> {
-                try {
-                    assertEquals(51, client1.calculate(operands1).get(), EPS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//             Runnable r1 = () -> {
+//                 try {
+//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
+//                 } catch (InterruptedException e) {
+//                     e.printStackTrace();
+//                 }
 
-            };
-            Runnable r2 = () -> {
-                try {
-                    assertEquals(51, client1.calculate(operands1).get(), EPS);
-                    assertEquals(51, client1.calculate(operands1).get(), EPS);
-                    //assertEquals(3.2625158429879466, client2.calculate(operands2).get(), EPS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//             };
+//             Runnable r2 = () -> {
+//                 try {
+//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
+//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
+//                 } catch (InterruptedException e) {
+//                     e.printStackTrace();
+//                 }
 
-            };
-//            Runnable r3 = () -> {
-//                try {
-//                    assertEquals(149, client1.calculate(operands3).get(), EPS);
-//                    assertEquals(3.2625158429879466, client2.calculate(operands2).get(), EPS);
-//                    assertEquals(51, client2.calculate(operands1).get(), EPS);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            };
-            r1.run();
-            r2.run();
-            //r3.run();
+//             };
+
+//             r1.run();
+//             r2.run();
+            
             Set<Integer> clientIds = new HashSet<>();
             clientIds.add(client1.getClientId());
             clientIds.add(client2.getClientId());
-            //assertEquals(clientIds, server.getClients());
         } catch (Exception e) {
             Assert.assertNull(e);
         }
@@ -269,13 +240,11 @@ public class SystemTests {
             Result result1 = client.calculate(operands1);
             Result result2 = client.calculate(operands2);
             Result result3 = client.calculate(operands3);
-            //result1.get();
-            //result2.get();
-            //result3.get();
+            
             client.cancelResult(result1.getId());
             client.cancelResult(result2.getId());
             client.cancelResult(result3.getId());
-            //DONE
+            
             Assert.assertEquals(ClientState.CANCEL, result1.getState());
             Assert.assertEquals(ClientState.CANCEL, result2.getState());
             Assert.assertEquals(ClientState.CANCEL, result3.getState());
@@ -292,7 +261,7 @@ public class SystemTests {
         try {
             Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
             Result result = client.calculateWithDeadline(operands2, 3000);
-            //assertEquals(3.26251584, result.get(), 0.001);
+           
         } catch (Exception e) {
             assertNull(e);
         }
@@ -301,13 +270,8 @@ public class SystemTests {
     //13S
     @Test(expected = RuntimeException.class)
     public void acalculateWithDeadlineFalse() {
-        //try {
-            Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
-            Result result = client.calculateWithDeadline(operands2, 1);
-//            assertEquals(3.26251584, result.get(), 0.001);
-//        } catch (InterruptedException e){
-//            assertNull(e);
-//        }
+          Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
+          Result result = client.calculateWithDeadline(operands2, 1);
     }
 
     //14S
