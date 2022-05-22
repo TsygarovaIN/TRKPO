@@ -256,7 +256,6 @@ public class SystemTests {
           Result result = client.calculateWithDeadline(operands2, 1);
         } catch(Exception e){
             e.printStackTrace();
-            assertNotNull(e);
         }
     }
 
