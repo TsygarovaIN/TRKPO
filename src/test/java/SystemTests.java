@@ -178,26 +178,7 @@ public class SystemTests {
         try {
             Client client1 = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 4);
             Client client2 = new Client(new int[]{clientPortsCounter - 1, clientPortsCounter - 2, clientPortsCounter - 3}, serverPortsCounter++, 4);
-//             Runnable r1 = () -> {
-//                 try {
-//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
-//                 } catch (InterruptedException e) {
-//                     e.printStackTrace();
-//                 }
 
-//             };
-//             Runnable r2 = () -> {
-//                 try {
-//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
-//                     assertEquals(51, client1.calculate(operands1).get(), EPS);
-//                 } catch (InterruptedException e) {
-//                     e.printStackTrace();
-//                 }
-
-//             };
-
-//             r1.run();
-//             r2.run();
             
             Set<Integer> clientIds = new HashSet<>();
             clientIds.add(client1.getClientId());
@@ -268,10 +249,15 @@ public class SystemTests {
     }
 
     //13S
-    @Test(expected = RuntimeException.class)
+    @Test
     public void acalculateWithDeadlineFalse() {
+        try {
           Client client = new Client(new int[]{clientPortsCounter - 1}, serverPortsCounter++, 1);
           Result result = client.calculateWithDeadline(operands2, 1);
+        } catch(Exception e){
+            e.printStackTrace();
+            assertNotNull(e);
+        }
     }
 
     //14S
