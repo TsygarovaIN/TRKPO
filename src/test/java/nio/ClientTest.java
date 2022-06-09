@@ -226,7 +226,7 @@ public class ClientTest {
             Assert.assertNull(e);
         }
     }
-
+/*
     @Test
     public void cancelResult() {
         try {
@@ -249,7 +249,7 @@ public class ClientTest {
             Assert.assertNull(e);
         }
     }
-
+*/
     @Test
     public void cancelDoneResult(){
         try {
