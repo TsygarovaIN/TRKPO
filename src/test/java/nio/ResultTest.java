@@ -91,9 +91,10 @@ public class ResultTest {
             e.printStackTrace();
         }
     }
-
+/*
     @Test
     public void getStateClose() {
+    
         try {
             Server server = new Server(new int[]{6003}, 1);
             server.start();
@@ -108,6 +109,7 @@ public class ResultTest {
             assertNull(e);
         }
     }
+    */
 
     @Test
     public void cancel() {
